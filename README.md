@@ -1,9 +1,4 @@
-# Class Scheduling Database - Phase II
-
-This repository contains all the necessary files for Phase II of the Class Scheduling Database project.
-
-## Files in this zip
-
+# Class Scheduling Database - Phase II - Task 2
 The ETL process reads class scheduling data from an Excel file, transforms it according to the database schema, and loads it into a SQLite database. The database includes information about departments, courses, terms, instructors, sections, buildings, and schedules.
 
 ## Files in this Repository
