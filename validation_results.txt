@@ -1,0 +1,271 @@
+
+=== Database Tables ===
+building    department  schedule    term      
+course      instructor  section   
+
+=== Department Table Schema ===
+CREATE TABLE department (
+        dept_id INTEGER PRIMARY KEY,
+        dept_code TEXT NOT NULL,
+        dept_name TEXT NOT NULL
+    );
+
+=== Course Table Schema ===
+CREATE TABLE course (
+        course_id INTEGER PRIMARY KEY,
+        dept_id INTEGER NOT NULL,
+        course_num TEXT NOT NULL,
+        course_name TEXT NOT NULL,
+        FOREIGN KEY (dept_id) REFERENCES department(dept_id)
+    );
+
+=== Term Table Schema ===
+CREATE TABLE term (
+        term_id INTEGER PRIMARY KEY,
+        term_code TEXT NOT NULL,
+        term_name TEXT NOT NULL,
+        start_date TEXT NOT NULL
+    );
+
+=== Instructor Table Schema ===
+CREATE TABLE instructor (
+        instr_id INTEGER PRIMARY KEY,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT
+    );
+
+=== Section Table Schema ===
+CREATE TABLE section (
+        section_id INTEGER PRIMARY KEY,
+        course_id INTEGER NOT NULL,
+        term_id INTEGER NOT NULL,
+        instr_id INTEGER NOT NULL,
+        section_num TEXT NOT NULL,
+        max_seats INTEGER NOT NULL,
+        FOREIGN KEY (course_id) REFERENCES course(course_id),
+        FOREIGN KEY (term_id) REFERENCES term(term_id),
+        FOREIGN KEY (instr_id) REFERENCES instructor(instr_id)
+    );
+
+=== Building Table Schema ===
+CREATE TABLE building (
+        bldg_id INTEGER PRIMARY KEY,
+        bldg_code TEXT NOT NULL,
+        bldg_name TEXT NOT NULL
+    );
+
+=== Schedule Table Schema ===
+CREATE TABLE schedule (
+        schedule_id INTEGER PRIMARY KEY,
+        section_id INTEGER NOT NULL,
+        bldg_id INTEGER NOT NULL,
+        room_num TEXT NOT NULL,
+        day_pattern TEXT NOT NULL,
+        FOREIGN KEY (section_id) REFERENCES section(section_id),
+        FOREIGN KEY (bldg_id) REFERENCES building(bldg_id)
+    );
+
+=== Record Counts ===
+Table_Name                      Record_Count                  
+------------------------------  ------------------------------
+Department                      1                             
+Course                          24                            
+Term                            2                             
+Instructor                      19                            
+Section                         36                            
+Building                        7                             
+Schedule                        36                            
+
+=== Sample Department Data ===
+dept_id                         dept_code                       dept_name                     
+------------------------------  ------------------------------  ------------------------------
+1                               R1260                           ENGR                          
+
+=== Sample Course Data ===
+course_id                       dept_id                         course_num                      course_name                   
+------------------------------  ------------------------------  ------------------------------  ------------------------------
+1                               1                               CS135                           Computer Science I            
+2                               1                               CS202                           Computer Science II           
+3                               1                               CS219                           Computer Organization         
+4                               1                               CS252                           Digital Forensics Fundamentals
+5                               1                               CS302                           Data Structures               
+
+=== Sample Term Data ===
+term_id                         term_code                       term_name                       start_date                    
+------------------------------  ------------------------------  ------------------------------  ------------------------------
+1                               202501                          Jan 2025 - May 2025             2025-01-21 00:00:00           
+2                               202412                          Dec 2024 - Jan 2025             2024-12-30 00:00:00           
+
+=== Sample Instructor Data ===
+instr_id                        first_name                      last_name                       email                         
+------------------------------  ------------------------------  ------------------------------  ------------------------------
+1                               Erin                            Keith                           erin.keith@university.edu     
+
+2                               Bashira                         Akter Anima                     bashira.akter anima@university
+                                                                                                .edu                          
+
+3                               Nancy                           Latourrette                     nancy.latourrette@university.e
+                                                                                                du                            
+
+4                               Mircea                          Nicolescu                       mircea.nicolescu@university.ed
+                                                                                                u                             
+
+5                               Diana                           Moss                            diana.moss@university.edu     
+
+=== Sample Section Data ===
+section_id                      course_id                       term_id                         instr_id                        section_num  max_seats
+------------------------------  ------------------------------  ------------------------------  ------------------------------  -----------  ---------
+24635                           5                               1                               1                               1001         81       
+24636                           8                               1                               5                               1001         83       
+24637                           13                              1                               11                              1001         85       
+24638                           1                               1                               1                               1001         160      
+24639                           1                               1                               1                               1101         0        
+
+=== Sample Building Data ===
+bldg_id                         bldg_code                       bldg_name                     
+------------------------------  ------------------------------  ------------------------------
+1                               SEM                             Seminar Building              
+
+2                               WPEB                            William Pearson Engineering Bu
+                                                                ilding                        
+
+3                               LME                             LME Building                  
+
+4                               DMSC                            DMSC Building                 
+
+5                               CFA                             CFA Building                  
+
+=== Sample Schedule Data ===
+schedule_id                     section_id                      bldg_id                         room_num                        day_pattern  
+------------------------------  ------------------------------  ------------------------------  ------------------------------  -------------
+1                               24638                           1                               101                             TR 12.0-13.15
+2                               24639                           2                               100                             M 8.0-8.5    
+3                               24640                           2                               100                             M 9.0-9.5    
+4                               24646                           2                               100                             M 10.0-10.5  
+5                               24654                           2                               100                             M 11.0-11.5  
+
+=== Courses per Department ===
+dept_name                       Course_Count                  
+------------------------------  ------------------------------
+ENGR                            24                            
+
+=== Sections per Course (Top 10) ===
+course_name                     Section_Count                 
+------------------------------  ------------------------------
+Computer Science I              7                             
+Computer Science II             6                             
+Prog Lang Conc Implmnt          2                             
+Virtual Reality                 1                             
+Testing and DevOps              1                             
+Senior Projects Cs              1                             
+Princ Comp Op Syst              1                             
+Pattern Recognition             1                             
+Mobile Sensor Networks          1                             
+Mobile Comp Security & Privacy  1                             
+
+=== Teaching Load per Instructor (Top 10) ===
+last_name                       first_name                      Section_Count                 
+------------------------------  ------------------------------  ------------------------------
+Keith                           Erin                            10                            
+Akter Anima                     Bashira                         7                             
+Latourrette                     Nancy                           2                             
+Tavakkoli                       Alireza                         2                             
+Yang                            Lei                             2                             
+Bebis                           George                          1                             
+Dahl                            Joshua                          1                             
+Davis                           Sara                            1                             
+Doherty                         William                         1                             
+Estreito                        Zachary                         1                             
+
+=== Building Usage (Schedules per Building) ===
+bldg_name                       Schedule_Count                
+------------------------------  ------------------------------
+William Pearson Engineering Bu  20                            
+ilding                                                        
+
+DMSC Building                   7                             
+
+Seminar Building                5                             
+
+MS Building                     1                             
+
+LME Building                    1                             
+
+CFA Building                    1                             
+
+AB Building                     1                             
+
+=== Complete Class Schedule (Sample) ===
+Department                      Course                          Title                           Section                         Instructor   Term                 Building                              Room  Schedule     
+------------------------------  ------------------------------  ------------------------------  ------------------------------  -----------  -------------------  ------------------------------------  ----  -------------
+ENGR                            CS135                           Computer Science I              1001                            Keith        Jan 2025 - May 2025  Seminar Building                      101   TR 12.0-13.15
+ENGR                            CS135                           Computer Science I              1101                            Keith        Jan 2025 - May 2025  William Pearson Engineering Building  100   M 8.0-8.5    
+ENGR                            CS135                           Computer Science I              1102                            Keith        Jan 2025 - May 2025  William Pearson Engineering Building  100   M 9.0-9.5    
+ENGR                            CS135                           Computer Science I              1103                            Keith        Jan 2025 - May 2025  William Pearson Engineering Building  100   M 10.0-10.5  
+ENGR                            CS135                           Computer Science I              1104                            Keith        Jan 2025 - May 2025  William Pearson Engineering Building  100   M 11.0-11.5  
+ENGR                            CS135                           Computer Science I              1105                            Keith        Jan 2025 - May 2025  William Pearson Engineering Building  100   M 12.0-12.5  
+ENGR                            CS135                           Computer Science I              1106                            Keith        Jan 2025 - May 2025  William Pearson Engineering Building  100   M 13.0-13.5  
+ENGR                            CS202                           Computer Science II             1001                            Akter Anima  Jan 2025 - May 2025  William Pearson Engineering Building  130   TR 12.0-13.15
+ENGR                            CS202                           Computer Science II             1101                            Akter Anima  Jan 2025 - May 2025  William Pearson Engineering Building  100   W 8.0-8.5    
+ENGR                            CS202                           Computer Science II             1102                            Akter Anima  Jan 2025 - May 2025  William Pearson Engineering Building  100   W 9.0-9.5    
+
+=== Sections with Highest Enrollment Capacity ===
+course_num                      course_name                     section_num                     last_name                       first_name  max_seats
+------------------------------  ------------------------------  ------------------------------  ------------------------------  ----------  ---------
+CS135                           Computer Science I              1001                            Keith                           Erin        160      
+CS202                           Computer Science II             1001                            Akter Anima                     Bashira     160      
+CS426                           Senior Projects Cs              1001                            Davis                           Sara        160      
+CS477                           Anlys of Algorithms             1001                            Nicolescu                       Monica      110      
+CS456                           Automata & Formal Lang          1001                            Latourrette                     Nancy       92       
+CS457                           Database Mgmt Systems           1001                            Hastings                        Jordan      91       
+CS446                           Princ Comp Op Syst              1001                            Papachristos                    Christos    85       
+CS365                           Math of Comp Science            1001                            Moss                            Diana       83       
+CS326                           Prog Lang Conc Implmnt          1001                            Nicolescu                       Mircea      83       
+CS302                           Data Structures                 1001                            Keith                           Erin        81       
+
+=== Class Days Distribution ===
+Day                             Class_Count                   
+------------------------------  ------------------------------
+F                               1                             
+M                               6                             
+MT                              1                             
+MW                              8                             
+T                               1                             
+TR                              14                            
+W                               5                             
+
+=== Room Utilization (Top 10) ===
+bldg_name                       room_num                        Usage_Count                   
+------------------------------  ------------------------------  ------------------------------
+William Pearson Engineering Bu  100                             13                            
+ilding                                                                                        
+
+William Pearson Engineering Bu  130                             5                             
+ilding                                                                                        
+
+William Pearson Engineering Bu  200                             2                             
+ilding                                                                                        
+
+DMSC Building                   102                             2                             
+
+DMSC Building                   103                             2                             
+
+Seminar Building                101                             1                             
+
+Seminar Building                234                             1                             
+
+Seminar Building                261                             1                             
+
+Seminar Building                347                             1                             
+
+Seminar Building                UNKNOWN                         1                             
+
+=== Potential Scheduling Conflicts (Same Room, Same Time) ===
+
+=== Course Offerings by Department ===
+dept_name                       Course_Count                    Section_Count                 
+------------------------------  ------------------------------  ------------------------------
+ENGR                            24                              36                            
+
+=== Database Validation Complete ===
